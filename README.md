@@ -2,6 +2,7 @@
 
 # Repository structure
 
+```
 MSU-Synovitis-Omics/
 ├── 0.run_analysis.R            # Orchestrates the full pipeline
 ├── 1.library_functions.R       # Helper/library functions used by the pipeline
@@ -15,6 +16,7 @@ MSU-Synovitis-Omics/
 ├── Definitive.ipynb            # Interactive analysis notebook
 ├── README.md                   # You are here
 └── environment.yml             # (Optional) Conda env for Python side (for reproducibility)
+```
 
 # Requirements
 
