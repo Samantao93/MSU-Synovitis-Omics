@@ -3,7 +3,11 @@ generate_volcano_plots <- function(data, group_col, output_dir) {
   data <- data[!is.na(data[[group_col]]), ]
   
   # Lista de columnas que quieres eliminar, excepto si coinciden con group_col
-  all_group_vars <- c("cod_paciente", "deposito", "microcristales", "sinovitis", "suero", "sexo", "leucocito", "edad")
+  if(group_col=='microcristales02'){
+    all_group_vars <- c("cod_paciente", "deposito", "microcristales", "sinovitis", "suero", "sexo", "leucocito", "edad",'ac_urico')
+  } else {
+    all_group_vars <- c("cod_paciente", "deposito", "microcristales", "sinovitis", "suero", "sexo", "leucocito", "edad")
+  }
   cols_to_remove <- setdiff(all_group_vars, group_col)
   
   # Eliminar esas columnas
@@ -115,7 +119,7 @@ generate_volcano_plots <- function(data, group_col, output_dir) {
       }
       
       ggsave(
-        filename = file.path(output_dir, paste0(contrast_names[k], "_volcano_plot", suffix, ".png")),
+        filename = file.path(output_dir, paste0(contrast_names[k], "_volcano_plot", suffix, ".svg")),
         plot = p, width = 10, height = 8, dpi = 300
       )
     }
