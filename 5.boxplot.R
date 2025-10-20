@@ -54,9 +54,9 @@ generate_boxplots <- function(data, group_col, output_dir) {
     
     # Ruta de guardado según significancia
     output_file <- if (!is.na(p_value) && p_value < 0.05) {
-      file.path(path_sign, paste0(i, "_boxplot.png"))
+      file.path(path_sign, paste0(i, "_boxplot.svg"))
     } else {
-      file.path(path_out, paste0(i, "_boxplot.png"))
+      file.path(path_out, paste0(i, "_boxplot.svg"))
     }
     
     # Coordenada y para anotación
