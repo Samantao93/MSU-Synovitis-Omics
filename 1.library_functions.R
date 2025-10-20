@@ -19,6 +19,10 @@ library(ggsignif)
 library(glue)
 library(reshape2)
 library(irr)
+library(magick)
+library(conflicted)
+conflict_prefer("filter", "dplyr")
+conflict_prefer("select", "dplyr")
 
 # Lista de variables de agrupación
 group_vars <- c("Deposito articular", "Microcristales", "Sinovitis ecográfica")
@@ -289,4 +293,5 @@ quantitative_data <- function(col, group, data = combinacion, posthoc_method = "
       stringsAsFactors = FALSE
     ))
   }
+
 }
