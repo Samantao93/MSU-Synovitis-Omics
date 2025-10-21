@@ -1,33 +1,49 @@
-path_sign='/boxplot/significativas/'
+for (i in c("Sinovitis ecográfica","Microcristales")){
+  path_sign=paste0('./results/',i,'/1. Estadística Básica/Boxplot por grupos/significativas/')
+  if (i == 'Sinovitis ecográfica'){
+    estadistica <- read_excel(paste0("results/",i,"/1. Estadística Básica/estadistica_sinovitis.xlsx"))
+  } else {
+    estadistica <- read_excel(paste0("results/",i,"/1. Estadística Básica/estadistica_microcristales.xlsx"))
+  }
+  estadistica<-filter(estadistica,col != 'leucocito')
+  estadistica_filter_05<-filter(estadistica,test>0.01 & test<0.05)
+  estadistica_filter_01<-filter(estadistica,test>0.001 & test<0.01)
+  estadistica_filter_001<-filter(estadistica,test<0.001)
+  
+  bands <- list(p_01_05 = estadistica_filter_05,
+                p_001_01 = estadistica_filter_01)
+  
+  
+  if (i == "Microcristales") {
+    bands$p_001 <- estadistica_filter_001
+  }
+  
+  for(band in names(bands)){
+    x <- bands[[band]]
+    n <- length(x)
+    cols <- ceiling(sqrt(n))
+    rows <- ceiling(n / cols)
+    tile_str <- paste0(cols, "x", rows)
 
-# estadistica <- read_excel("results/estadistica.xlsx")
-# estadistica_filter<-filter(estadistica,test<0.001) # Filtramos 0.01 y 0.001.
+    files_filter<-paste0(path_sign,x$col,'_boxplot.svg')
 
-# files_filter<-paste0(path_sign,estadistica_filter$col,'_boxplot.svg')
+    imgs <- lapply(files_filter, function(f) {
+      image_read_svg(f)
+    })
 
-files_filter <- list.files(path_sign, pattern = "\\.svg$", full.names = TRUE)
-files_filter <- files_filter[!grepl("leucocito", files_filter)]
-n <- length(files_filter)
-cols <- ceiling(sqrt(n))
-rows <- ceiling(n / cols)
-tile_str <- paste0(cols, "x", rows)
+    combined <- image_montage(
+      image_join(imgs),
+      tile = tile_str,
+      geometry = "+12+12",
+      bg = "white"
+    )
 
-imgs <- lapply(files_filter, function(f) {
-  image_read_svg(f)
-})
+    image_write(image_convert(combined, "jpeg"),
+                path   = file.path(path_sign, paste0("combinado_auto_",band,".jpg")),
+                format = "jpeg",
+                quality = 100,
+                density = "300x300")
+  }
+}
 
-combined <- image_montage(
-  image_join(imgs),
-  tile = tile_str,
-  geometry = "+12+12",     
-  bg = "white"             
-)
-
-# Guardar salida (elige uno)
-# out_png <- file.path(path_sign, "combinado_auto.png")
-image_write(image_convert(combined, "jpeg"),
-            path   = file.path(path_sign, "combinado_auto.jpg"), # 01 y 001
-            format = "jpeg",
-            quality = 100,      
-            density = "300x300")
 
