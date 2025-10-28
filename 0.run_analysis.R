@@ -26,6 +26,8 @@ generate_boxplots(combinacion, "deposito", output_dir = "/data/results/Deposito 
 generate_boxplots(combinacion, "microcristales", output_dir = "/data/results/Microcristales/1. Estadística Básica/Boxplot por grupos/")
 generate_boxplots(combinacion, "sinovitis", output_dir = "/data/results/Sinovitis ecográfica/1. Estadística Básica/Boxplot por grupos/")
 
+source("scripts/final/5.1.boxplot_combined.R")
+
 # Realizar VolcanoPlot
 source("./6.volcanoplot.R")
 generate_volcano_plots(combinacion, group_col = "deposito", output_dir = "/data/results/Deposito articular/2. Volcano Plot/")
@@ -42,3 +44,4 @@ run_pca_analysis(group_col = "sinovitis",  output_dir = "/data/results/Sinovitis
 source("./8.corr_heat.R")
 # df_correlacion <- read.csv("/data/datos/df_correlacion.csv", sep = ";", header = TRUE)
 analizar_synovial_serum(df_correlacion_meta)
+
